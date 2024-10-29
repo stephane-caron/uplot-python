@@ -6,6 +6,7 @@
 
 import numpy as np
 
+
 def array2string(array: np.ndarray) -> str:
     """Get string representation of a NumPy array suitable for uPlot.
 
@@ -15,7 +16,9 @@ def array2string(array: np.ndarray) -> str:
     Returns:
         String representation of the array.
     """
-    return np.array2string(array, separator=",").replace("nan", "null")
+    return np.array2string(array, precision=64, separator=",").replace(
+        "nan", "null"
+    )
 
 
 def js(code: str) -> str:
