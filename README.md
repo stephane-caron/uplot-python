@@ -23,7 +23,7 @@ data = [t, np.exp(0.42 * t)]
 opts = {
     "width": 1920,
     "height": 600,
-    "title": "Example with plot",
+    "title": "Example with uplot.plot",
     "series": [{}, { "stroke": "red", }, ],
 }
 
@@ -40,7 +40,7 @@ t = np.linspace(0.0, 1.0, 10)
 uplot.plot2(
     t,
     [np.exp(0.1 * t), np.exp(-10.0 * t), np.cos(t)],
-    title="Example with plot2",
+    title="Example with uplot.plot2",
     left_labels=["exp(A t)", "exp(-B t)", "cos(t)"],
 )
 ```
