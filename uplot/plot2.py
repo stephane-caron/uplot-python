@@ -41,6 +41,54 @@ def add_default_options(opts: dict) -> None:
         ]
 
 
+def add_series(
+    opts: dict,
+    data: List[np.ndarray],
+    left_labels: Optional[List[str]],
+    right_labels: Optional[List[str]],
+) -> None:
+    opts["series"] = [{}]
+    color_picker = ColorPicker()
+    for i, series in enumerate(data[1:]):
+        new_series = {
+            "show": True,
+            "spanGaps": False,
+            "stroke": color_picker.get_next_color(),
+            "width": js("2 / devicePixelRatio"),
+        }
+
+        def find_in_lists(
+            i: int,
+            left_list: Optional[List[str]],
+            right_list: Optional[List[str]],
+        ) -> Optional[str]:
+            if left_list is not None:
+                if i < len(left_list):
+                    return left_list[i]
+                i -= len(left_labels)
+            if right_list is not None and i >= 0:
+                return right_list[i]
+            return None
+
+        label = find_in_lists(i, left_labels, right_labels)
+        if label is not None:
+            new_series["label"] = label
+
+        # scale = find_in_lists(i, left_scales, right_scales)
+        # if scale is not None:
+        #     new_series["scale"] = scale
+
+        new_series["value"] = js(
+            "(self, rawValue) => Number.parseFloat(rawValue).toPrecision(2)"
+        )
+
+        # Last, we hack the wrapper to append `paths` after "lineInterpolation"
+        new_series["lineInterpolation"] = js(
+            "lineInterpolations.stepAfter, paths"
+        )
+        opts["series"].append(new_series)
+
+
 def plot2(
     x: np.ndarray,
     left: List[np.ndarray],
