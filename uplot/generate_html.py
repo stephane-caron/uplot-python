@@ -23,6 +23,7 @@ def generate_html(opts: dict, data: List[np.ndarray], resize: bool) -> str:
     Args:
         opts: uPlot option dictionary.
         data: List of NumPy arrays, one for each series in the plot.
+        resize: If set, scale plot to page width and height.
 
     Returns:
         HTML contents of the page.

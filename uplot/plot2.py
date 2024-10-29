@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2024 Inria
 
-"""Additional plot function."""
+"""Plot function with additional defaults and arguments."""
 
 import webbrowser
 from typing import List, Optional
@@ -18,7 +18,7 @@ from .utils import js
 from .write_html_tempfile import write_html_tempfile
 
 
-def prepare_data(x, left, right):
+def __prepare_data(x, left, right):
     if isinstance(left, np.ndarray) and left.ndim == 1:
         left = [left]
     data = [x, *left]
@@ -27,7 +27,7 @@ def prepare_data(x, left, right):
     return data
 
 
-def add_default_options(opts: dict) -> None:
+def __add_default_options(opts: dict) -> None:
     if "cursor" not in opts:
         opts["cursor"] = {
             "drag": {
@@ -42,7 +42,7 @@ def add_default_options(opts: dict) -> None:
         ]
 
 
-def add_series(
+def __add_series(
     opts: dict,
     data: List[np.ndarray],
     nb_left: int,
@@ -57,7 +57,7 @@ def add_series(
 
     opts["series"] = [{}]
     color_picker = ColorPicker()
-    for i, series in enumerate(data[1:]):
+    for i, _ in enumerate(data[1:]):
         new_series = {
             "show": True,
             "spanGaps": False,
@@ -87,7 +87,7 @@ def add_series(
         opts["series"].append(new_series)
 
 
-def add_axes(opts: dict) -> None:
+def __add_axes(opts: dict) -> None:
     opts["axes"] = [
         {},
         {
@@ -126,13 +126,15 @@ def plot2(
         timestamped: If set, x-axis values are treated as timestamps.
         width: Plot width in pixels.
         height: Plot height in pixels.
+        left_labels: List of labels for left-axis series.
+        right_labels: List of labels for right-axis series.
         kwargs: Other keyword arguments are forward to uPlot as options.
     """
-    data = prepare_data(x, left, right)
+    data = __prepare_data(x, left, right)
 
     # Prepare options
     opts = kwargs.copy()
-    add_default_options(opts)
+    __add_default_options(opts)
     if "id" not in opts:
         opts["id"] = "chart1"
     if title is not None:
@@ -144,9 +146,9 @@ def plot2(
     if height is not None:
         opts["height"] = height
     if "series" not in opts:
-        add_series(opts, data, len(left), left_labels, right_labels)
+        __add_series(opts, data, len(left), left_labels, right_labels)
     if "axes" not in opts:
-        add_axes(opts)
+        __add_axes(opts)
 
     # Generate and open plot
     html = generate_html(opts, data, resize=resize)

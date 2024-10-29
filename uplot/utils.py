@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2024 Inria
 
+"""Utility functions."""
+
 import numpy as np
 
 __MAX_INT = np.iinfo(np.int64).max
