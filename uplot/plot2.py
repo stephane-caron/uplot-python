@@ -115,7 +115,7 @@ def plot2(
     right: Optional[List[np.ndarray]] = None,
     resize: bool = True,
     title: Optional[str] = None,
-    timestamped: Optional[bool] = None,
+    timestamped: bool = False,
     width: Optional[int] = None,
     height: Optional[int] = None,
     left_labels: Optional[List[str]] = None,
