@@ -28,13 +28,9 @@ def generate_html(opts: dict, data: List[np.ndarray], resize: bool) -> str:
     Returns:
         HTML contents of the page.
     """
-    with resources.path("uplot.static", "uPlot.min.css") as path:
-        uplot_min_css = path
-    with resources.path("uplot.static", "uPlot.iife.js") as path:
-        uplot_iife_js = path
-    with resources.path("uplot.static", "uPlot.mousewheel.js") as path:
-        uplot_mwheel_js = path
-
+    uplot_min_css = resources.files("uplot.static") / "uPlot.min.css"
+    uplot_iife_js = resources.files("uplot.static") / "uPlot.iife.js"
+    uplot_mwheel_js = resources.files("uplot.static") / "uPlot.mousewheel.js"
     date = datetime.now().strftime("%Y%m%d-%H%M%S")
     title = opts.get("title", f"Plot from {date}")
 
