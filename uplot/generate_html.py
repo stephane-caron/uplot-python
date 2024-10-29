@@ -46,7 +46,7 @@ def generate_html(opts: dict, data: List[np.ndarray], resize: bool) -> str:
         opts["class"] = "uplot-chart"
     if resize:
         opts["width"] = js("window.innerWidth - 20")
-        opts["height"] = js("window.innerHeight - 20")
+        opts["height"] = js("window.innerHeight - 150")
     opts_string = json.dumps(opts)
     opts_string = opts_string.replace('"<script>', "")
     opts_string = opts_string.replace('</script>"', "")
