@@ -4,6 +4,12 @@ Python wrapper for [μPlot](https://github.com/leeoniya/uPlot) 📈
 
 ## Installation
 
+### From conda-forge
+
+```console
+conda install -c conda-forge uplot-python
+```
+
 ### From PyPI
 
 ```console
@@ -19,7 +25,7 @@ import numpy as np
 import uplot
 
 t = np.linspace(0.0, 1.0, 10)
-data = [t, np.exp(0.42 * t)]
+data = [t, np.exp(0.42 * t)]  # list of NumPy arrays
 opts = {
     "width": 1920,
     "height": 600,
