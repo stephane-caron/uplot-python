@@ -5,4 +5,5 @@
 .tox
 _build
 dist/
+examples/uplot
 htmlcov/
