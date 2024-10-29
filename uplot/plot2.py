@@ -12,6 +12,7 @@ from typing import List, Optional
 import numpy as np
 
 from .color_picker import ColorPicker
+from .exceptions import UplotException
 from .generate_html import generate_html
 from .utils import js
 from .write_html_tempfile import write_html_tempfile
@@ -44,9 +45,16 @@ def add_default_options(opts: dict) -> None:
 def add_series(
     opts: dict,
     data: List[np.ndarray],
+    nb_left: int,
     left_labels: Optional[List[str]],
     right_labels: Optional[List[str]],
 ) -> None:
+    if left_labels is not None and len(left_labels) < nb_left:
+        raise UplotException(
+            f"Not enough labels in left_labels ({len(left_labels)}) "
+            f"to label all {nb_left} left-axis series"
+        )
+
     opts["series"] = [{}]
     color_picker = ColorPicker()
     for i, series in enumerate(data[1:]):
