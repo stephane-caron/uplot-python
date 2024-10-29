@@ -16,9 +16,13 @@ def array2string(array: np.ndarray) -> str:
     Returns:
         String representation of the array.
     """
-    return np.array2string(array, precision=64, separator=",").replace(
-        "nan", "null"
+    array_str = np.array2string(
+        array,
+        precision=64,
+        separator=",",
+        threshold=np.inf,
     )
+    return array_str.replace("nan", "null")
 
 
 def js(code: str) -> str:
