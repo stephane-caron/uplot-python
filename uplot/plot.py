@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2024 Inria
 
-"""Main plot function."""
+"""Plot function with the same API as the one in µPlot."""
 
 import webbrowser
 from typing import List
