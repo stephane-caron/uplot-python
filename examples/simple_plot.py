@@ -10,7 +10,7 @@ import uplot
 
 if __name__ == "__main__":
     t = np.arange(10)
-    uplot.pyplot(
+    uplot.plot2(
         t,
         [np.exp(0.1 * t), np.exp(-10 * t), np.cos(t)],
         title="Simple plot",

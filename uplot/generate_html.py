@@ -14,17 +14,7 @@ from typing import List
 
 import numpy as np
 
-
-def __array2string(array: np.ndarray) -> str:
-    """Get string representation of a NumPy array suitable for uPlot.
-
-    Args:
-        array: NumPy array to convert to JavaScript.
-
-    Returns:
-        String representation of the array.
-    """
-    return np.array2string(array, separator=",").replace("nan", "null")
+from .utils import array2string, js
 
 
 def generate_html(opts: dict, data: List[np.ndarray], resize: bool) -> str:
@@ -50,17 +40,16 @@ def generate_html(opts: dict, data: List[np.ndarray], resize: bool) -> str:
     data_string = ""
     for array in data:
         data_string += f"""
-                {__array2string(array)},"""
+                {array2string(array)},"""
 
     if "class" not in opts:
         opts["class"] = "uplot-chart"
     if resize:
-        opts["width"] = 123456789
-        opts["height"] = 987654321
-    s = json.dumps(opts)
-    s = s.replace("123456789", "window.innerWidth - 20")
-    s = s.replace("987654321", "window.innerHeight - 20")
-    opts_string = s
+        opts["width"] = js("window.innerWidth - 20")
+        opts["height"] = js("window.innerHeight - 20")
+    opts_string = json.dumps(opts)
+    opts_string = opts_string.replace('"<script>', "")
+    opts_string = opts_string.replace('</script>"', "")
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
