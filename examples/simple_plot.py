@@ -9,7 +9,7 @@ import numpy as np
 import uplot
 
 if __name__ == "__main__":
-    t = np.arange(10)
+    t = np.linspace(0.0, 1.0, 10)
     data = [
         t,
         np.exp(0.42 * t),
