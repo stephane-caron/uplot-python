@@ -1,6 +1,6 @@
 # uplot-python
 
-Python wrapper for [μPlot](https://github.com/leeoniya/uPlot) time series 📈
+Python wrapper for [μPlot](https://github.com/leeoniya/uPlot) 📈
 
 ## Installation
 
@@ -30,7 +30,7 @@ opts = {
 uplot.plot(opts, data)
 ```
 
-For convenience, the library also provides a `plot2` function with additional defaults, for an experience closer to `matplotlib.pyplot.plot`:
+For convenience, the library also provides a `plot2` function with additional defaults aimed at time series and line plots, for an experience closer to `matplotlib.pyplot.plot`:
 
 ```py
 import numpy as np

@@ -7,7 +7,7 @@
 
 """Python wrapper for μPlot time series."""
 
-__version__ = "0.0.1"
+__version__ = "1.0.0"
 
 from .plot import plot
 from .plot2 import plot2
