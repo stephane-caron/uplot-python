@@ -27,7 +27,7 @@ def __array2string(array: np.ndarray) -> str:
     return np.array2string(array, separator=",").replace("nan", "null")
 
 
-def generate_html(opts: dict, data: List[np.ndarray]) -> str:
+def generate_html(opts: dict, data: List[np.ndarray], resize: bool) -> str:
     """Generate plot in an HTML page.
 
     Args:
@@ -46,10 +46,22 @@ def generate_html(opts: dict, data: List[np.ndarray]) -> str:
 
     date = datetime.now().strftime("%Y%m%d-%H%M%S")
     title = opts.get("title", f"Plot from {date}")
+
     data_string = ""
     for array in data:
         data_string += f"""
                 {__array2string(array)},"""
+
+    if "class" not in opts:
+        opts["class"] = "uplot-chart"
+    if resize:
+        opts["width"] = 123456789
+        opts["height"] = 987654321
+    s = json.dumps(opts)
+    s = s.replace("123456789", "window.innerWidth - 20")
+    s = s.replace("987654321", "window.innerHeight - 20")
+    opts_string = s
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
     <head>
@@ -58,7 +70,7 @@ def generate_html(opts: dict, data: List[np.ndarray]) -> str:
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="{uplot_min_css}">
         <style>
-            div.my-chart {{
+            div.uplot-chart {{
                 background-color: white;
                 padding: 10px 0px;  // appear in Right Click -> Take Screenshot
             }}
@@ -102,16 +114,18 @@ def generate_html(opts: dict, data: List[np.ndarray]) -> str:
                 );
             }}
 
-            let opts = {json.dumps(opts)};
-            let uplot = new uPlot(opts, data, document.body);
+            let opts = {opts_string};
+            let uplot = new uPlot(opts, data, document.body);"""
+    if resize:
+        html += """
 
-            // resize with window
-            window.addEventListener("resize", e => {{
-                uplot.setSize({{
+            window.addEventListener("resize", e => {
+                uplot.setSize({
                     width: window.innerWidth - 20,
                     height: window.innerHeight - 150,
-                }});
-            }});
+                });
+            });"""
+    html += """
         </script>
     </body>
 </html>"""

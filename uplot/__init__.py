@@ -10,5 +10,9 @@
 __version__ = "0.0.1"
 
 from .plot import plot
+from .pyplot import pyplot
 
-__all__ = ["plot"]
+__all__ = [
+    "plot",
+    "pyplot",
+]
