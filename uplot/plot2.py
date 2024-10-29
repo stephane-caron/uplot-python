@@ -95,9 +95,11 @@ def plot2(
     right: Optional[List[np.ndarray]] = None,
     resize: bool = True,
     title: Optional[str] = None,
-    time: Optional[bool] = None,
+    timestamped: Optional[bool] = None,
     width: Optional[int] = None,
     height: Optional[int] = None,
+    left_labels: Optional[List[str]] = None,
+    right_labels: Optional[List[str]] = None,
     **kwargs,
 ) -> None:
     """Plot function with additional defaults and parameters.
@@ -108,7 +110,7 @@ def plot2(
         right: Values for the (optional) right y-axis.
         resize: If set (default), scale plot to page width and height.
         title: Plot title.
-        time: If set, the x-axis is treated as a timestamp.
+        timestamped: If set, x-axis values are treated as timestamps.
         width: Plot width in pixels.
         height: Plot height in pixels.
         kwargs: Other keyword arguments are forward to uPlot as options.
@@ -118,23 +120,18 @@ def plot2(
     # Prepare options
     opts = kwargs.copy()
     add_default_options(opts)
+    if "id" not in opts:
+        opts["id"] = "chart1"
     if title is not None:
         opts["title"] = title
-    if time is not None:
-        opts["scales"] = {"x": {"time": time}}
+    if timestamped is not None:
+        opts["scales"] = {"x": {"time": timestamped}}
     if width is not None:
         opts["width"] = width
     if height is not None:
         opts["height"] = height
     if "series" not in opts:
-        opts["series"] = [{}]
-        color_picker = ColorPicker()
-        for series in data[1:]:
-            opts["series"].append(
-                {
-                    "stroke": color_picker.get_next_color(),
-                }
-            )
+        add_series(opts, data, left_labels, right_labels)
 
     # Generate and open plot
     html = generate_html(opts, data, resize=resize)
