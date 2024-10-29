@@ -65,13 +65,6 @@ def add_series(
             "width": js("2 / devicePixelRatio"),
         }
 
-        def find_in_lists(
-            i: int,
-            left_list: Optional[List[str]],
-            right_list: Optional[List[str]],
-        ) -> Optional[str]:
-            return None
-
         if left_labels is not None and i < nb_left:
             new_series["label"] = left_labels[i]
         if i >= nb_left:
