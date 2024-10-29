@@ -70,17 +70,14 @@ def add_series(
             left_list: Optional[List[str]],
             right_list: Optional[List[str]],
         ) -> Optional[str]:
-            if left_list is not None:
-                if i < len(left_list):
-                    return left_list[i]
-                i -= len(left_labels)
-            if right_list is not None and i >= 0:
-                return right_list[i]
             return None
 
-        label = find_in_lists(i, left_labels, right_labels)
-        if label is not None:
-            new_series["label"] = label
+        if left_labels is not None and i < nb_left:
+            new_series["label"] = left_labels[i]
+        if i >= nb_left:
+            if right_labels is not None:
+                new_series["label"] = right_labels[i - nb_left]
+            new_series["scale"] = "right_axis"
 
         # scale = find_in_lists(i, left_scales, right_scales)
         # if scale is not None:
