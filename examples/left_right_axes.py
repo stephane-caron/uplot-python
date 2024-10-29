@@ -154,7 +154,6 @@ if __name__ == "__main__":
         left=[v1, v2],
         right=[u],
         title="Plot with left and right axes",
-        time=False,
         left_labels=["v1", "v2"],
         right_labels=["u"],
     )
