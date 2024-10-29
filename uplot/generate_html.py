@@ -7,73 +7,49 @@
 
 """Generate an HTML page containing the output plot."""
 
+import json
+from datetime import datetime
 from importlib import resources
-from math import isnan
-from typing import Dict, Iterable, List
+from typing import List
 
 import numpy as np
-from numpy.typing import NDArray
-
-from .color_picker import ColorPicker
 
 
-def __ensure_floats(series: Iterable) -> List[float]:
-    return [float(x) for x in series]
-
-
-def __escape_null(series: Iterable) -> str:
-    """Escape undefined values in a series.
+def __array2string(array: np.ndarray) -> str:
+    """Get string representation of a NumPy array suitable for uPlot.
 
     Args:
-        series: Series to filter.
+        array: NumPy array to convert to JavaScript.
 
     Returns:
-        String representation of the series.
+        String representation of the array.
     """
-    return (
-        "["
-        + ", ".join(
-            map(
-                lambda x: (
-                    str(int(x))
-                    if isinstance(x, bool)
-                    else (
-                        str(x)
-                        if isinstance(x, (int, float)) and not isnan(x)
-                        else x if isinstance(x, str) else "null"
-                    )
-                ),
-                series,
-            )
-        )
-        + "]"
-    )
+    return np.array2string(array, separator=",").replace("nan", "null")
 
 
-def generate_html(
-    opts: dict,
-    data: List[Iterable[float, int]],
-) -> str:
+def generate_html(opts: dict, data: List[np.ndarray]) -> str:
     """Generate plot in an HTML page.
+
+    Args:
+        opts: uPlot option dictionary.
+        data: List of NumPy arrays, one for each series in the plot.
 
     Returns:
         HTML contents of the page.
     """
-    with resources.path("foxplot.uplot", "uPlot.min.css") as path:
+    with resources.path("uplot.static", "uPlot.min.css") as path:
         uplot_min_css = path
-    with resources.path("foxplot.uplot", "uPlot.iife.js") as path:
+    with resources.path("uplot.static", "uPlot.iife.js") as path:
         uplot_iife_js = path
-    with resources.path("foxplot.uplot", "uPlot.mousewheel.js") as path:
+    with resources.path("uplot.static", "uPlot.mousewheel.js") as path:
         uplot_mwheel_js = path
 
-    color_picker = ColorPicker()
-    right_axis_label = f" {right_axis_unit}" if right_axis_unit else ""
-    left_labels = list(left_axis.keys())
-    right_labels = list(right_axis.keys())
-    labels = left_labels + [r for r in right_labels if r not in left_labels]
-    series_from_label = {}
-    series_from_label.update(left_axis)
-    series_from_label.update(right_axis)
+    date = datetime.now().strftime("%Y%m%d-%H%M%S")
+    title = opts.get("title", f"Plot from {date}")
+    data_string = ""
+    for array in data:
+        data_string += f"""
+                {__array2string(array)},"""
     html = f"""<!DOCTYPE html>
 <html lang="en">
     <head>
@@ -94,26 +70,22 @@ def generate_html(
         <script>
             const {{ linear, stepped, bars, spline, spline2 }} = uPlot.paths;
 
-            let data = ["""
-    for label in data.keys():
-        html += f"""
-                {__escape_null(data[label])},"""
-    html += """
+            let data = [{data_string}
             ];
 
-            const lineInterpolations = {
+            const lineInterpolations = {{
                 linear: 0,
                 stepAfter: 1,
                 stepBefore: 2,
                 spline: 3,
-            };
+            }};
 
-            const _stepBefore = stepped({align: -1});
-            const _stepAfter = stepped({align:  1});
+            const _stepBefore = stepped({{align: -1}});
+            const _stepAfter = stepped({{align:  1}});
             const _linear = linear();
             const _spline = spline();
 
-            function paths(u, seriesIdx, idx0, idx1, extendGap, buildClip) {
+            function paths(u, seriesIdx, idx0, idx1, extendGap, buildClip) {{
                 let s = u.series[seriesIdx];
                 let interp = s.lineInterpolation;
 
@@ -128,100 +100,18 @@ def generate_html(
                 return renderer(
                     u, seriesIdx, idx0, idx1, extendGap, buildClip
                 );
-            }
+            }}
 
-            let opts = {"""
-    html += f"""
-                title: "{title}","""
-    html += """
-                id: "chart1",
-                class: "my-chart",
-                width: window.innerWidth - 20,
-                height: window.innerHeight - 150,
-                cursor: {
-                    drag: {
-                        x: true,
-                        y: true,
-                        uni: 50,
-                    }
-                },
-                plugins: [
-                    wheelZoomPlugin({factor: 0.75})
-                ],"""
-    html += f"""
-                scales: {{
-                    x: {{
-                        time: {"true" if timestamped else "false"},
-                    }},
-                }},
-                series: ["""
-    html += f"""
-                    {{
-                        value: (self, rawValue) => Number.parseFloat(rawValue -
-                        {times[0]}).toPrecision(4),
-                    }},"""
-    for label in labels:
-        html += f"""
-                    {{
-                        // initial toggled state (optional)
-                        show: true,
-                        spanGaps: false,
-
-                        // in-legend display
-                        label: "{label}","""
-        if label in right_labels:
-            html += f"""
-                        value: (self, rawValue) =>
-                            Number.parseFloat(rawValue).toPrecision(2) +
-                            "{right_axis_label}",
-                        scale: "{right_axis_unit}","""
-        else:  # label in left_labels
-            html += f"""
-                        value: (self, rawValue) =>
-                            Number.parseFloat(rawValue).toPrecision(2) +
-                            "{left_axis_label}","""
-        html += f"""
-                        // series style
-                        stroke: "{color_picker.get_next_color()}",
-                        width: 2 / devicePixelRatio,
-                        lineInterpolation: lineInterpolations.stepAfter,
-                        paths,
-                    }},"""
-    html += """
-                ],
-                axes: [
-                    {},
-                    {"""
-    html += f"""
-                        size: {60 + 10 * len({left_axis_label})},
-                        values: (u, vals, space) => vals.map(
-                            v => v + "{left_axis_label}"
-                        ),"""
-    html += """
-                    },
-                    {
-                        side: 1,"""
-    html += f"""
-                        scale: "{right_axis_unit}",
-                        size: {60 + 10 * len({right_axis_label})},
-                        values: (u, vals, space) => vals.map(
-                            v => v + "{right_axis_label}"
-                        ),"""
-    html += """
-                        grid: {show: false},
-                    },
-                ],
-            };
-
+            let opts = {json.dumps(opts)};
             let uplot = new uPlot(opts, data, document.body);
 
             // resize with window
-            window.addEventListener("resize", e => {
-                uplot.setSize({
+            window.addEventListener("resize", e => {{
+                uplot.setSize({{
                     width: window.innerWidth - 20,
                     height: window.innerHeight - 150,
-                });
-            });
+                }});
+            }});
         </script>
     </body>
 </html>"""

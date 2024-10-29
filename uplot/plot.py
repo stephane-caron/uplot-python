@@ -4,33 +4,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2024 Inria
 
-"""Main class to manipulate dictionary-series data."""
+"""Main plot function."""
 
-import logging
-import sys
 import webbrowser
-from typing import BinaryIO, Dict, List, Optional, TextIO, Union
-
-import numpy as np
-from numpy.typing import NDArray
+from typing import Iterable, List
 
 from .generate_html import generate_html
-from .write_tmpfile import write_tmpfile
+from .write_html_tempfile import write_html_tempfile
 
 
-def plot(
-    self,
-    opts: dict,
-    data: List[Iterable[float, int]],
-) -> None:
-    html = generate_html(
-        times,
-        left_series,
-        right_series,
-        title,
-        left_axis_unit,
-        right_axis_unit,
-        timestamped=self.__time is not None,
-    )
-    filename = write_tmpfile(html)
+def plot(opts: dict, data: List[Iterable]) -> None:
+    html = generate_html(opts, data)
+    filename = write_html_tempfile(html)
     webbrowser.open_new_tab(filename)

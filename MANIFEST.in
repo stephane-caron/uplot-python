@@ -1,1 +1,1 @@
-include uplot/uplot/uPlot.*
+include uplot/static/uPlot.*

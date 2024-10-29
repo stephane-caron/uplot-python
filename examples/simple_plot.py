@@ -5,8 +5,30 @@
 # Copyright 2024 Inria
 
 import numpy as np
+
 import uplot
 
 if __name__ == "__main__":
     t = np.arange(10)
-    uplot.plot(t, np.exp(0.42 * t))
+    data = [
+        t,
+        np.exp(0.42 * t),
+    ]
+    opts = {
+        "width": 1920,
+        "height": 600,
+        "title": "Simple plot",
+        "scales": {
+            "x": {
+                "time": False,
+            },
+        },
+        "series": [
+            {},
+            {
+                "stroke": "red",
+                "fill": "rgba(255,0,0,0.1)",
+            },
+        ],
+    }
+    uplot.plot(opts, data)

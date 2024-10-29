@@ -11,14 +11,14 @@ import tempfile
 from datetime import datetime
 
 
-def write_tmpfile(html: str) -> str:
-    """Write output page.
+def write_html_tempfile(html: str) -> str:
+    """Write string to an HTML file.
 
     Args:
         html: HTML content.
 
     Returns:
-        Name of the output file (a temporary file).
+        Name of the output temporary file.
     """
     filename: str = ""
     with tempfile.NamedTemporaryFile(
