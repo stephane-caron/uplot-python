@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- CICD: CI workflow
+- CICD: Changelog workflow
+- Complete API documentation
+
+### Fixed
+
+- Clean up dead code
+- Correct type annotations
+- Update `resources.path` to `resources.files`
+
 ## [1.0.0] - 2024-10-29
 
 - Extract this project from [foxplot](https://github.com/stephane-caron/foxplot)
