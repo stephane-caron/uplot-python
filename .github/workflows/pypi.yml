@@ -1,0 +1,26 @@
+name: PyPI
+
+on:
+    push:
+        tags:
+            - 'v*'
+
+jobs:
+    pip:
+        name: "PyPI checks"
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: "Checkout sources"
+              uses: actions/checkout@v3
+
+            - name: "Set up Python 3.9"
+              uses: actions/setup-python@v4
+              with:
+                  python-version: "3.9"
+
+            - name: "Install package"
+              run: pip install uplot-python
+
+            - name: "Import uplot"
+              run: python -c "import uplot"
