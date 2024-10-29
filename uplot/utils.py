@@ -6,6 +6,8 @@
 
 import numpy as np
 
+__MAX_INT = np.iinfo(np.int64).max
+
 
 def array2string(array: np.ndarray) -> str:
     """Get string representation of a NumPy array suitable for uPlot.
@@ -20,7 +22,7 @@ def array2string(array: np.ndarray) -> str:
         array,
         precision=64,
         separator=",",
-        threshold=np.inf,
+        threshold=__MAX_INT,
     )
     return array_str.replace("nan", "null")
 
