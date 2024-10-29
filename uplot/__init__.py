@@ -5,7 +5,7 @@
 # Copyright 2022 Stéphane Caron
 # Copyright 2023-2024 Inria
 
-"""Plot Python iterables with µPlot."""
+"""Python wrapper for μPlot time series."""
 
 __version__ = "0.0.1"
 
