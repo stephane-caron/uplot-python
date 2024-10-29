@@ -94,6 +94,21 @@ def add_series(
         opts["series"].append(new_series)
 
 
+def add_axes(opts: dict) -> None:
+    opts["axes"] = [
+        {},
+        {
+            "size": 60,
+        },
+        {
+            "side": 1,
+            "scale": "right_axis",
+            "size": 60,
+            "grid": {"show": False},
+        },
+    ]
+
+
 def plot2(
     x: np.ndarray,
     left: List[np.ndarray],
@@ -136,7 +151,9 @@ def plot2(
     if height is not None:
         opts["height"] = height
     if "series" not in opts:
-        add_series(opts, data, left_labels, right_labels)
+        add_series(opts, data, len(left), left_labels, right_labels)
+    if "axes" not in opts:
+        add_axes(opts)
 
     # Generate and open plot
     html = generate_html(opts, data, resize=resize)
