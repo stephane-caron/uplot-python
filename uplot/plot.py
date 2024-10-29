@@ -7,13 +7,15 @@
 """Main plot function."""
 
 import webbrowser
-from typing import Iterable, List
+from typing import List
+
+import numpy as np
 
 from .generate_html import generate_html
 from .write_html_tempfile import write_html_tempfile
 
 
-def plot(opts: dict, data: List[Iterable]) -> None:
+def plot(opts: dict, data: List[np.ndarray]) -> None:
     """Plot function with the same API as uPlot's `plot`.
 
     Args:
