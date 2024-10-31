@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Clean up dead code
 - Correct type annotations
+- Format values in axes to update ticks when zooming
 - Update `resources.path` to `resources.files`
 
 ## [1.0.0] - 2024-10-29
