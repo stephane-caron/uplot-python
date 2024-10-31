@@ -13,10 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CICD: Changelog workflow
 - Complete API documentation
 
-### Changed
-
-- Bump minimum Python version to 3.9
-
 ### Fixed
 
 - Clean up dead code
