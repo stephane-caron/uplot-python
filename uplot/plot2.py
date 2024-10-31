@@ -92,12 +92,14 @@ def __add_axes(opts: dict) -> None:
         {},
         {
             "size": 60,
+            "values": js("(u, vals, space) => vals.map(v => v + '')"),
         },
         {
-            "side": 1,
-            "scale": "right_axis",
-            "size": 60,
             "grid": {"show": False},
+            "scale": "right_axis",
+            "side": 1,
+            "size": 60,
+            "values": js("(u, vals, space) => vals.map(v => v + '')"),
         },
     ]
 
