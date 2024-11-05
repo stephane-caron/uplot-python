@@ -48,6 +48,7 @@ def __add_series(
     nb_left: int,
     left_labels: Optional[List[str]],
     right_labels: Optional[List[str]],
+    time: bool,
 ) -> None:
     if left_labels is not None and len(left_labels) < nb_left:
         raise UplotException(
@@ -55,7 +56,11 @@ def __add_series(
             f"to label all {nb_left} left-axis series"
         )
 
-    opts["series"] = [{}]
+    x_series = {}
+    if time:  # set precision of the legend to the millisecond
+        x_series["value"] = "{YYYY}-{MM}-{DD} {HH}:{mm}:{ss}.{fff}"
+
+    opts["series"] = [x_series]
     color_picker = ColorPicker()
     for i, _ in enumerate(data[1:]):
         new_series = {
@@ -148,7 +153,7 @@ def plot2(
     if height is not None:
         opts["height"] = height
     if "series" not in opts:
-        __add_series(opts, data, len(left), left_labels, right_labels)
+        __add_series(opts, data, len(left), left_labels, right_labels, time)
     if "axes" not in opts:
         __add_axes(opts)
 
