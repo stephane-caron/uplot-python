@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CICD: Changelog workflow
 - Complete API documentation
 
+### Changed
+
+- **Breaking:** Rename `timestamped` argument of `plot2` to `time`
+
 ### Fixed
 
 - Clean up dead code

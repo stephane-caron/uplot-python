@@ -110,7 +110,7 @@ def plot2(
     right: Optional[List[np.ndarray]] = None,
     resize: bool = True,
     title: Optional[str] = None,
-    timestamped: bool = False,
+    time: bool = False,
     width: Optional[int] = None,
     height: Optional[int] = None,
     left_labels: Optional[List[str]] = None,
@@ -125,7 +125,7 @@ def plot2(
         right: Values for the (optional) right y-axis.
         resize: If set (default), scale plot to page width and height.
         title: Plot title.
-        timestamped: If set, x-axis values are treated as timestamps.
+        time: If set, x-axis values are treated as timestamps.
         width: Plot width in pixels.
         height: Plot height in pixels.
         left_labels: List of labels for left-axis series.
@@ -141,8 +141,8 @@ def plot2(
         opts["id"] = "chart1"
     if title is not None:
         opts["title"] = title
-    if timestamped is not None:
-        opts["scales"] = {"x": {"time": timestamped}}
+    if time is not None:
+        opts["scales"] = {"": {"time": time}}
     if width is not None:
         opts["width"] = width
     if height is not None:
