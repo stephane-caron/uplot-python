@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Format values in axes to update ticks when zooming
 - Update `resources.path` to `resources.files`
 
+### Removed
+
+- Intermediate `array2string` utility function
+
 ## [1.0.0] - 2024-10-29
 
 - Extract this project from [foxplot](https://github.com/stephane-caron/foxplot)

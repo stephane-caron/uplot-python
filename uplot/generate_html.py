@@ -14,7 +14,13 @@ from typing import List
 
 import numpy as np
 
-from .utils import array2string, js
+from .utils import js
+
+__MAX_INT = np.iinfo(np.int64).max
+
+
+def __float_formatter(x) -> str:
+    return f"{x}" if not np.isnan(x) else "null"
 
 
 def generate_html(opts: dict, data: List[np.ndarray], resize: bool) -> str:
@@ -40,8 +46,16 @@ def generate_html(opts: dict, data: List[np.ndarray], resize: bool) -> str:
 
     data_string = ""
     for array in data:
+        array_string = np.array2string(
+            array.astype(np.float64),
+            max_line_width=__MAX_INT,
+            precision=64,
+            separator=", ",
+            threshold=__MAX_INT,
+            formatter={"all": __float_formatter},
+        )
         data_string += f"""
-                {array2string(array)},"""
+                {array_string},"""
 
     if "class" not in opts:
         opts["class"] = "uplot-chart"
