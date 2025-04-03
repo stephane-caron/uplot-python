@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - CICD: CI workflow
 - CICD: Changelog workflow
+- CICD: Update checkout action to v4
 - Complete API documentation
 - Set precision of time legends to the millisecond
 
