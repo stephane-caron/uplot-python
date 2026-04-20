@@ -1,58 +1,31 @@
 # uplot-python
 
-Python wrapper for [μPlot](https://github.com/leeoniya/uPlot) 📈
+This repository has moved to Codeberg:
 
-## Installation
+<p align="center">
+  <a href="https://codeberg.org/stephane-caron/uplot-python">
+    <img src="https://codeberg.org/Codeberg/GetItOnCodeberg/raw/branch/main/get-it-on-blue-on-white.png" alt="Get it on Codeberg" height="80">
+  </a>
+</p>
 
-### From conda-forge
+Its new address is: **https://codeberg.org/stephane-caron/uplot-python**
 
-```console
-conda install -c conda-forge uplot-python
-```
+Codeberg is a free and open-source code forge maintained by a non-profit organization. Note that this GitHub repository is now **archived** and will no longer receive updates. All development, issues, and pull requests now happen on Codeberg.
 
-### From PyPI
+## For users
 
-```console
+No changes required. You can always install from PyPI:
+
+```bash
 pip install uplot-python
 ```
 
-## Usage
+## For contributors
 
-The `plot` function has the same API as µPlot's `uPlot.plot`:
+If you have a local clone of this repository, you can point it at the new remote:
 
-```py
-import numpy as np
-import uplot
-
-t = np.linspace(0.0, 1.0, 10)
-data = [t, np.exp(0.42 * t)]  # list of NumPy arrays
-opts = {
-    "width": 1920,
-    "height": 600,
-    "title": "Example with uplot.plot",
-    "series": [{}, { "stroke": "red", }, ],
-}
-
-uplot.plot(opts, data)
+```bash
+git remote set-url origin https://codeberg.org/stephane-caron/uplot-python.git
 ```
 
-For convenience, the library also provides a `plot2` function with additional defaults aimed at time series and line plots, for an experience closer to `matplotlib.pyplot.plot`:
-
-```py
-import numpy as np
-import uplot
-
-t = np.linspace(0.0, 1.0, 10)
-uplot.plot2(
-    t,
-    [np.exp(0.1 * t), np.exp(-10.0 * t), np.cos(t)],
-    title="Example with uplot.plot2",
-    left_labels=["exp(A t)", "exp(-B t)", "cos(t)"],
-)
-```
-
-## See also
-
-- [µPlot](https://github.com/leeoniya/uPlot): A small (~45 KB min), fast chart for time series, lines, areas, ohlc & bars.
-- [Matplotlib](https://matplotlib.org/stable/): Comprehensive library for creating static, animated, and interactive visualizations.
-- [matplotlive](https://github.com/stephane-caron/matplotlive): Stream live plots to a Matplotlib figure.
+Issues and pull requests are welcome on [Codeberg](https://codeberg.org/stephane-caron/uplot-python).
